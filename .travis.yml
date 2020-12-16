@@ -1,0 +1,36 @@
+language: node_js
+node_js:
+    - 'node'
+
+addons:
+  ssh_known_hosts:
+    - ec2-18-191-150-245.us-east-2.compute.amazonaws.com
+  sonarcloud:
+    organization: "epsfork"
+    token: ${SONAR_TOKEN} 
+
+services:
+- docker
+
+notifications:
+    email: false
+
+branches:
+only:
+    - master
+    - development    
+    - r1_retro_branch
+
+before_script:
+    - npm install
+    - sonar-scanner -Dsonar.projectKey=Guilherme-Aguiar_2020.1-VC_Gestor-FrontEnd
+
+script:
+  - npm run test && chmod 400 deploy_rsa;
+
+# deploy:
+#   provider: script
+#   script: 
+#     - bash deploy.sh ${TRAVIS_BRANCH}
+#   on:
+#     branch: master 
